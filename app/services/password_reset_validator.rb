@@ -22,7 +22,7 @@ class PasswordResetValidator < ActiveInteraction::Base
 
   def user
     @user ||= AdminUser.find_by(email: email).tap do |user|
-      errors.add(:base, "Admin user has no matching email") if user.nil?
+      errors.add(:base, "admin email not found") if user.nil?
     end
   end
 
