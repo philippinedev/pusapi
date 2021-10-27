@@ -32,7 +32,8 @@ RSpec.describe PasswordResetValidator, type: :model do
 
     context 'valid' do
       let(:encrypted_token) { BCrypt::Password.create(token) }
-      let(:sent_at) { 23.hours.ago }
+      let(:not_expired_hours) { PasswordResetValidator::EXPIRATION_HOURS - 1 }
+      let(:sent_at) { not_expired_hours.hours.ago }
 
       it 'returns true' do
         expect(subject).to be true
