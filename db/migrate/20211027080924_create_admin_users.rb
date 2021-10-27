@@ -4,7 +4,7 @@ class CreateAdminUsers < ActiveRecord::Migration[6.1]
       t.string :email
       t.string :password_digest
       t.string :reset_password_token
-      t.string :reset_password_sent_at
+      t.datetime :reset_password_sent_at
 
       t.timestamps
     end

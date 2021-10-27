@@ -24,7 +24,7 @@ RSpec.describe AdminUser, type: :model do
     it 'successfully updates reset password columns' do
       expect { subject }.to change { AdminUser.where(
         reset_password_token: encrypted_token,
-        reset_password_sent_at: sent_at.to_s
+        reset_password_sent_at: sent_at
       ).count }.by(1)
     end
   end
