@@ -3,6 +3,16 @@ require 'rails_helper'
 RSpec.describe PasswordResetsController, type: :request do
   let(:email) { "john@example.com" }
   let(:token) { "token" }
+  let(:expected_error) { "Email not found" }
+  let(:expected_message) { "Failure" }
+  let(:expected_success) { false }
+  let(:expected) do
+    {
+      "error" => expected_error,
+      "message" => expected_message,
+      "success" => expected_success
+    }
+  end
 
   # STEP 1 - Accept email
   describe "POST /create" do
@@ -18,18 +28,22 @@ RSpec.describe PasswordResetsController, type: :request do
 
     context "missing email" do
       it "return false" do
-        expect(JSON.parse(response.body)).to eq({ "success" => false })
+        expect(JSON.parse(response.body)).to eq expected
         expect(response).to have_http_status(404)
       end
     end
 
     context "existing" do
+      let(:expected_error) { nil }
+      let(:expected_message) { "Success" }
+      let(:expected_success) { true }
+
       before :context do
         create(:admin_user, email: "john@example.com")
       end
 
       it "returns true" do
-        expect(JSON.parse(response.body)).to eq({ "success" => true })
+        expect(JSON.parse(response.body)).to eq expected
         expect(response).to have_http_status(200)
       end
     end
@@ -50,12 +64,16 @@ RSpec.describe PasswordResetsController, type: :request do
 
     context "missing email" do
       it "return false" do
-        expect(JSON.parse(response.body)).to eq({ "success" => false })
+        expect(JSON.parse(response.body)).to eq expected
         expect(response).to have_http_status(404)
       end
     end
 
     context "existing" do
+      let(:expected_error) { nil }
+      let(:expected_message) { "Success" }
+      let(:expected_success) { true }
+
       before :context do
         create(:admin_user, email: "john@example.com").tap do |user|
           user.initiate_reset_password("token")
@@ -63,28 +81,47 @@ RSpec.describe PasswordResetsController, type: :request do
       end
 
       it "returns true" do
-        expect(JSON.parse(response.body)).to eq({ "success" => true })
+        expect(JSON.parse(response.body)).to eq expected
         expect(response).to have_http_status(200)
       end
     end
   end
 
-  # describe "PATCH /create" do
-  #   let(:password) { "1PA$%abcdefg" }
-  #   let(:params) do
-  #     {
-  #       email: email,
-  #       token: token,
-  #       password: password
-  #     }
-  #   end
+  describe "PATCH /create" do
+    let(:password) { "1PA$%abcdefg" }
+    let(:params) do
+      {
+        email: email,
+        token: token,
+        password: password
+      }
+    end
 
-  #   before do
-  #     post "/password_reset", params: params
-  #   end
+    before do
+      patch "/password_reset", params: params
+    end
 
-  #   it 'ok' do
-  #     expect(JSON.parse(response.body)).to eq({})
-  #   end
-  # end
+    context "missing email" do
+      it "return false" do
+        expect(JSON.parse(response.body)).to eq expected
+        expect(response).to have_http_status(404)
+      end
+    end
+
+    context "existing" do
+      let(:expected_error) { nil }
+      let(:expected_message) { "Success" }
+      let(:expected_success) { true }
+
+      before :context do
+        binding.pry
+        create(:admin_user, email: "john@example.com", password: password)
+      end
+
+      it "returns true" do
+        expect(JSON.parse(response.body)).to eq expected
+        expect(response).to have_http_status(200)
+      end
+    end
+  end
 end

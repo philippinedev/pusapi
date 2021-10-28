@@ -20,7 +20,7 @@ class ApplicationController < ActionController::API
   def error
     return if @outcome.errors.messages.except(:status).blank?
 
-    @outcome.errors.full_messages.to_sentence.gsub(/ and Status 404/, "")
+    @outcome.errors.full_messages.to_sentence.gsub(/ and Status \d{3}/, "")
   end
 
   def message

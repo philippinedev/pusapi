@@ -21,7 +21,12 @@ class PasswordResetValidator < ApplicationService
   end
 
   def token_matched?
-    user.reset_password_token_matched? token
+    user.reset_password_token_matched?(token).tap do |passed|
+      unless passed
+        errors.add(:token, "is invalid")
+        errors.add(:status, 401)
+      end
+    end
   end
 end
 
