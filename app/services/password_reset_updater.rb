@@ -8,25 +8,10 @@ class PasswordResetUpdater < PasswordReset
   string :password
 
   def execute
-    return if user.nil?
-
-    ActiveRecord::Base.transaction do
-      set_new_password
-      update_user!
-    end
-  end
-
-  private
-
-  def update_user!
-    user.save!
-    user.update!(
+    user&.update!(
+      password: password,
       reset_password_token: nil,
       reset_password_sent_at: nil
     )
-  end
-
-  def set_new_password
-    user.password = password
   end
 end
