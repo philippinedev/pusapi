@@ -1,5 +1,5 @@
 class PasswordResetsController < ApplicationController
-  # STEP 1 - Accept email
+  # STEP 1 - Initiate password reset
   def create
     @outcome = PasswordResetInitiator.run(email: params[:email])
     render_json
