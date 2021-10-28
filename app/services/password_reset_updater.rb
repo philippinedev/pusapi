@@ -8,6 +8,8 @@ class PasswordResetUpdater < ApplicationService
   string :password
 
   def execute
+    return if user.nil?
+
     ActiveRecord::Base.transaction do
       set_new_password
       update_user!

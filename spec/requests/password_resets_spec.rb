@@ -114,8 +114,7 @@ RSpec.describe PasswordResetsController, type: :request do
       let(:expected_success) { true }
 
       before :context do
-        binding.pry
-        create(:admin_user, email: "john@example.com", password: password)
+        create(:admin_user, email: "john@example.com", password: "1PA$%abcdefg")
       end
 
       it "returns true" do
