@@ -1,4 +1,4 @@
-class PasswordResetValidator < ApplicationService
+class PasswordResetValidator < PasswordReset
   EXPIRATION_HOURS = 24
 
   string :email
@@ -29,4 +29,3 @@ class PasswordResetValidator < ApplicationService
     end
   end
 end
-

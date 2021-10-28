@@ -1,4 +1,4 @@
-class ApplicationService < ActiveInteraction::Base
+class PasswordReset < ActiveInteraction::Base
   private
 
   def user

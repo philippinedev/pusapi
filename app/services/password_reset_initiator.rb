@@ -1,4 +1,4 @@
-class PasswordResetInitiator < ApplicationService
+class PasswordResetInitiator < PasswordReset
   TOKEN_LENGTH = 20
 
   string :email

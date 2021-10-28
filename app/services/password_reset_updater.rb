@@ -1,6 +1,6 @@
 require 'bcrypt'
 
-class PasswordResetUpdater < ApplicationService
+class PasswordResetUpdater < PasswordReset
   include BCrypt
 
   string :email
@@ -30,4 +30,3 @@ class PasswordResetUpdater < ApplicationService
     user.password = password
   end
 end
-
