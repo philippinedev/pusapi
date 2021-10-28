@@ -1,15 +1,7 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
-  </head>
-  <body>
-    <p>Someone requested to reset the password of following account:</p>
-    <br />
-    <p>Admin Email Address: <%= @user.email %></p>
-    <p>If this was a mistake, just ignore this email and nothing will happen.</p>
-    <br />
-    <p>To reset your password, click reset link below:</p>
-    <p><%= link_to @frontend_reset_url, @frontend_reset_url %></p>
-  </body>
-</html>
+  <p>Someone requested to reset the password of following account:</p>
+  <br />
+  <p>Admin Email Address: <%= @user.email %></p>
+  <p>If this was a mistake, just ignore this email and nothing will happen.</p>
+  <br />
+  <p>To reset your password, click reset link below:</p>
+  <p><%= link_to @frontend_reset_url, @frontend_reset_url %></p>
