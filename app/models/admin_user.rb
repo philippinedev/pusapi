@@ -14,6 +14,8 @@ class AdminUser < ApplicationRecord
 
   def reset_password_token_matched?(token)
     Password.new(reset_password_token) == token
+  rescue BCrypt::Errors::InvalidHash
+    false
   end
 end
 

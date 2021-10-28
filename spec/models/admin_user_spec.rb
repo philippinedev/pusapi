@@ -39,6 +39,16 @@ RSpec.describe AdminUser, type: :model do
       expect(subject).to be true
     end
 
+    context 'invalid reset_password_token' do
+      let(:encrypted_token) { 'invalid' }
+
+      subject { user.reset_password_token_matched?(token) }
+
+      it 'returns false' do
+        expect(subject).to be false
+      end
+    end
+
     context 'invalid token' do
       let(:wrong_token) { "atoken" }
 
