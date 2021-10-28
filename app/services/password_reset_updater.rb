@@ -30,7 +30,10 @@ class PasswordResetUpdater < ActiveInteraction::Base
 
   def user
     @user ||= AdminUser.find_by(email: email).tap do |user|
-      errors.add(:base, "admin email not found") if user.nil?
+      if user.nil?
+        errors.add(:email, "not found")
+        errors.add(:status, 404)
+      end
     end
   end
 end
