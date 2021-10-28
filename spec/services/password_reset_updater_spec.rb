@@ -41,7 +41,7 @@ RSpec.describe PasswordResetUpdater, type: :model do
 
     it 'authenticates new password' do
       subject
-      expect(BCrypt::Password.new(user.reload.password_digest) == password).to be true
+      expect(user.reload.authenticate(password)).to eq user
     end
   end
 end
