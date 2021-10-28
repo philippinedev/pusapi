@@ -17,6 +17,8 @@ class PasswordResetValidator < PasswordReset
   end
 
   def elapsed
+    return 0 if user.reset_password_sent_at.nil?
+
     Time.now - user.reset_password_sent_at
   end
 

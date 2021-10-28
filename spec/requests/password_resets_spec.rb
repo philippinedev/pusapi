@@ -69,6 +69,23 @@ RSpec.describe PasswordResetsController, type: :request do
       end
     end
 
+    context "invalid token" do
+      let(:expected_error) { "Token is invalid" }
+      let(:expected_message) { "Failure" }
+      let(:expected_success) { false }
+
+      before :context do
+        create(:admin_user, email: "john@example.com").tap do |user|
+          user.initiate_reset_password("wrongtoken")
+        end
+      end
+
+      it "returns true" do
+        expect(JSON.parse(response.body)).to eq expected
+        expect(response).to have_http_status(401)
+      end
+    end
+
     context "existing" do
       let(:expected_error) { nil }
       let(:expected_message) { "Success" }
@@ -87,6 +104,7 @@ RSpec.describe PasswordResetsController, type: :request do
     end
   end
 
+  # STEP 3 - Save new password after validating email and token
   describe "PATCH /create" do
     let(:password) { "1PA$%abcdefg" }
     let(:params) do
@@ -108,13 +126,32 @@ RSpec.describe PasswordResetsController, type: :request do
       end
     end
 
+    context "invalid token" do
+      let(:expected_error) { "Token is invalid" }
+      let(:expected_message) { "Failure" }
+      let(:expected_success) { false }
+
+      before :context do
+        create(:admin_user, email: "john@example.com").tap do |user|
+          user.initiate_reset_password("wrongtoken")
+        end
+      end
+
+      it "returns true" do
+        expect(JSON.parse(response.body)).to eq expected
+        expect(response).to have_http_status(401)
+      end
+    end
+
     context "existing" do
       let(:expected_error) { nil }
       let(:expected_message) { "Success" }
       let(:expected_success) { true }
 
       before :context do
-        create(:admin_user, email: "john@example.com", password: "1PA$%abcdefg")
+        create(:admin_user, email: "john@example.com").tap do |user|
+          user.initiate_reset_password("token")
+        end
       end
 
       it "returns true" do

@@ -7,20 +7,28 @@ class PasswordResetsController < ApplicationController
 
   # STEP 2 - Validate email and token
   def show
-    @outcome = PasswordResetValidator.run(
-      email: params[:email],
-      token: params[:token]
-    )
+    token_check
     render_json
   end
 
   # STEP 3 - Save new password after validating email and token
   def update
-    @outcome = PasswordResetUpdater.run(
-      email: params[:email],
-      token: params[:token],
-      password: params[:password]
-    )
+    if token_check.valid?
+      @outcome = PasswordResetUpdater.run(
+        email: params[:email],
+        token: params[:token],
+        password: params[:password]
+      )
+    end
     render_json
+  end
+
+  private
+
+  def token_check
+    @outcome = PasswordResetValidator.run(
+      email: params[:email],
+      token: params[:token]
+    )
   end
 end
