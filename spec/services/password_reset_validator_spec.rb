@@ -24,13 +24,13 @@ RSpec.describe PasswordResetValidator, type: :model do
             )
     end
 
-    context 'expired' do
+    context 'expired token' do
       it 'returns false' do
         expect(subject).to be false
       end
     end
 
-    context 'valid' do
+    context 'not expired token' do
       let(:encrypted_token) { BCrypt::Password.create(token) }
       let(:not_expired_hours) { PasswordResetValidator::EXPIRATION_HOURS - 1 }
       let(:sent_at) { not_expired_hours.hours.ago }
