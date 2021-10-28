@@ -1,4 +1,4 @@
-class PasswordResetValidator < ActiveInteraction::Base
+class PasswordResetValidator < ApplicationService
   EXPIRATION_HOURS = 24
 
   string :email
@@ -18,12 +18,6 @@ class PasswordResetValidator < ActiveInteraction::Base
 
   def elapsed
     Time.now - user.reset_password_sent_at
-  end
-
-  def user
-    @user ||= AdminUser.find_by(email: email).tap do |user|
-      errors.add(:base, "admin email not found") if user.nil?
-    end
   end
 
   def token_matched?

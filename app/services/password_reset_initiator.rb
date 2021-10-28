@@ -1,4 +1,4 @@
-class PasswordResetInitiator < ActiveInteraction::Base
+class PasswordResetInitiator < ApplicationService
   TOKEN_LENGTH = 20
 
   string :email
@@ -11,15 +11,6 @@ class PasswordResetInitiator < ActiveInteraction::Base
   end
 
   private
-
-  def user
-    @user ||= AdminUser.find_by(email: email).tap do |user|
-      if user.nil?
-        errors.add(:email, "not found")
-        errors.add(:status, 404)
-      end
-    end
-  end
 
   def password_reset_email
     PasswordResetMailer
