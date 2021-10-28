@@ -14,7 +14,7 @@ class PasswordResetInitiator < ApplicationService
 
   def password_reset_email
     PasswordResetMailer
-      .with(user: user, password: token)
+      .with(user: user, token: token)
       .initiate
   end
 

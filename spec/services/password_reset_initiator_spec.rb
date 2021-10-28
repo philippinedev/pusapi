@@ -47,7 +47,7 @@ RSpec.describe PasswordResetInitiator, type: :model do
 
     it 'invokes sending of PasswordResetMailer' do
       expect(PasswordResetMailer).to receive(:with)
-        .with(user: user, password: token)
+        .with(user: user, token: token)
     end
   end
 end
