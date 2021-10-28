@@ -2,8 +2,7 @@ class PasswordResetsController < ApplicationController
   # STEP 1 - Accept email
   def create
     @outcome = PasswordResetInitiator.run(email: params[:email])
-
-    render json: { success: success }, status: status
+    render_json
   end
 
   # STEP 2 - Validate email and token
@@ -12,8 +11,7 @@ class PasswordResetsController < ApplicationController
       email: params[:email],
       token: params[:token]
     )
-
-    render json: { success: success }, status: status
+    render_json
   end
 
   # STEP 3 - Save new password after validating email and token
@@ -23,17 +21,6 @@ class PasswordResetsController < ApplicationController
       token: params[:token],
       password: params[:password]
     )
-
-    render json: { success: success }, status: status
-  end
-
-  private
-
-  def success
-    @outcome.valid?
-  end
-
-  def status
-    @outcome.valid? ? 200 : 404
+    render_json
   end
 end
