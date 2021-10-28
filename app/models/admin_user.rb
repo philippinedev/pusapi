@@ -18,4 +18,3 @@ class AdminUser < ApplicationRecord
     false
   end
 end
-

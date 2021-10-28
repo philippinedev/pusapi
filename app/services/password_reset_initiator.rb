@@ -7,7 +7,7 @@ class PasswordResetInitiator < PasswordReset
     return if user.nil?
 
     user.initiate_reset_password(token)
-    password_reset_email.deliver
+    password_reset_email.send(deliver)
   end
 
   private
@@ -20,5 +20,12 @@ class PasswordResetInitiator < PasswordReset
 
   def token
     @token ||= SecureRandom.alphanumeric(TOKEN_LENGTH)
+  end
+
+  def deliver
+    return :deliver if Rails.env.development?
+    return :deliver if Rails.env.test?
+
+    :deliver_later
   end
 end
